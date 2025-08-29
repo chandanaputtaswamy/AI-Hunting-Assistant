@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MITRE ATT&CK Tactic Visualization</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; }
+    h1 { color: #333; }
+    canvas { max-width: 800px; margin-top: 2em; }
+  </style>
+</head>
+<body>
+
+  <h1>📊 Top 10 MITRE ATT&CK Tactics by Technique Count</h1>
+  <canvas id="tacticChart"></canvas>
+
+  <script>
+    const ATTACK_URL = "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json";
+
+    async function loadData() {
+      try {
+        const response = await fetch(ATTACK_URL);
+        const data = await response.json();
+
+        const techniques = data.objects.filter(obj =>
+          obj.type === "attack-pattern" && obj.external_references
+        );
+
+        const tacticCounts = {};
+
+        techniques.forEach(t => {
+          const id = t.external_references.find(ref => ref.external_id)?.external_id;
+          if (id) {
+            const tacticId = id.split('.')[0];
+            tacticCounts[tacticId] = (tacticCounts[tacticId] || 0) + 1;
+          }
+        });
+
+        const sortedTactics = Object.entries(tacticCounts)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 10);
+
+        const labels = sortedTactics.map(item => item[0]);
+        const counts = sortedTactics.map(item => item[1]);
+
+        renderChart(labels, counts);
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    }
+
+    function renderChart(labels, data) {
+      const ctx = document.getElementById('tacticChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Technique Count',
+            data: data,
+            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: 'Top 10 MITRE ATT&CK Tactics'
+            }
+          },
+          scales: {
+            x: { title: { display: true, text: 'Tactic ID' } },
+            y: { title: { display: true, text: 'Number of Techniques' }, beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    loadData();
+  </script>
+
+</body>
+</html>

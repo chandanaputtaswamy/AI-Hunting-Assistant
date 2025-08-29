@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MITRE ATT&CK Technique Search</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background: #f4f4f4; }
+    input, button { padding: 0.5em; font-size: 1em; }
+    #results { margin-top: 2em; }
+    .technique { background: #fff; padding: 1em; margin-bottom: 1em; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .technique h3 { margin: 0; }
+    .technique p { margin: 0.5em 0; }
+    .technique a { color: #0077cc; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <h1>🔍 MITRE ATT&CK Technique Search</h1>
+  <input type="text" id="searchInput" placeholder="Enter keyword..." />
+  <button onclick="searchTechniques()">Search</button>
+
+  <div id="results"></div>
+
+  <script>
+    const ATTACK_URL = "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json";
+    let techniques = [];
+
+    async function fetchData() {
+      try {
+        const response = await fetch(ATTACK_URL);
+        const data = await response.json();
+        techniques = data.objects.filter(obj =>
+          obj.type === "attack-pattern" && obj.external_references
+        ).map(t => ({
+          name: t.name,
+          description: t.description,
+          id: t.external_references.find(ref => ref.external_id)?.external_id || "N/A",
+          url: t.external_references.find(ref => ref.url)?.url || "#",
+          tactic: t.kill_chain_phases?.map(p => p.phase_name) || []
+        }));
+      } catch (error) {
+        document.getElementById("results").innerHTML = `<p>Error loading data: ${error}</p>`;
+      }
+    }
+
+    function searchTechniques() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const filtered = techniques.filter(t =>
+        t.name.toLowerCase().includes(query) ||
+        t.description.toLowerCase().includes(query)
+      );
+
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+
+      if (filtered.length === 0) {
+        resultsDiv.innerHTML = "<p>No matching techniques found.</p>";
+        return;
+      }
+
+      filtered.forEach(t => {
+        const div = document.createElement("div");
+        div.className = "technique";
+        div.innerHTML = `
+          <h3>🔐 ${t.name}</h3>
+          <p><strong>ID:</strong> ${t.id}</p>
+          <p><strong>Tactic(s):</strong> ${t.tactic.join(", ") || "Unknown"}</p>
+          <p><strong>Description:</strong> ${t.description.slice(0, 200)}...</p>
+          <p><a href="${t.url}" target="_blank">🔗 More Info</a></p>
+        `;
+        resultsDiv.appendChild(div);
+      });
+    }
+
+    fetchData();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cyber Maze Levels</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; background: #f0f8ff; }
+    #maze { display: grid; gap: 5px; margin: 20px auto; }
+    .cell { width: 60px; height: 60px; background: #ddd; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+    .player { background: #4CAF50; color: white; }
+    .trap { background: #f44336; color: white; }
+    .goal { background: #2196F3; color: white; }
+  </style>
+</head>
+<body>
+  <h1>Cyber Maze</h1>
+  <p id="levelInfo">Level 1</p>
+  <div id="maze"></div>
+  <p id="tip"></p>
+
+  <script>
+    let level = 1;
+    let mazeSize = 5;
+    let playerPos = 0;
+    let traps = [];
+    let goal = 0;
+
+    const maze = document.getElementById("maze");
+    const tip = document.getElementById("tip");
+    const levelInfo = document.getElementById("levelInfo");
+
+    const cyberTips = [
+      "Tip: Never share your password with anyone!",
+      "Tip: Use two-factor authentication for extra safety.",
+      "Tip: Don’t click on suspicious links in emails."
+    ];
+
+    function setupLevel() {
+      mazeSize = 4 + level; // Increase size each level
+      playerPos = 0;
+      goal = mazeSize * mazeSize - 1;
+      traps = [];
+
+      while (traps.length < level * 2) {
+        let t = Math.floor(Math.random() * (mazeSize * mazeSize));
+        if (t !== playerPos && t !== goal && !traps.includes(t)) traps.push(t);
+      }
+
+      levelInfo.textContent = `Level ${level}`;
+      tip.textContent = cyberTips[level - 1] || "";
+      drawMaze();
+    }
+
+    function drawMaze() {
+      maze.style.gridTemplateColumns = `repeat(${mazeSize}, 60px)`;
+      maze.innerHTML = "";
+      for (let i = 0; i < mazeSize * mazeSize; i++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        if (i === playerPos) cell.classList.add("player");
+        else if (i === goal) { cell.classList.add("goal"); cell.textContent = "🏁"; }
+        else if (traps.includes(i)) { cell.classList.add("trap"); cell.textContent = "💣"; }
+        maze.appendChild(cell);
+      }
+    }
+
+    function movePlayer(dir) {
+      let row = Math.floor(playerPos / mazeSize);
+      let col = playerPos % mazeSize;
+      if (dir === "ArrowUp" && row > 0) playerPos -= mazeSize;
+      if (dir === "ArrowDown" && row < mazeSize - 1) playerPos += mazeSize;
+      if (dir === "ArrowLeft" && col > 0) playerPos -= 1;
+      if (dir === "ArrowRight" && col < mazeSize - 1) playerPos += 1;
+
+      if (traps.includes(playerPos)) {
+        alert("💥 Trap hit! Try again.");
+        playerPos = 0;
+      } else if (playerPos === goal) {
+        alert("🎉 Level Complete!");
+        level++;
+        setupLevel();
+        return;
+      }
+
+      drawMaze();
+    }
+
+    document.addEventListener("keydown", e => movePlayer(e.key));
+    setupLevel();
+  </script>
+</body>
+</html>

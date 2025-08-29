@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Threat Hunting Assistant - Accelerate Security Investigations</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="index1.css"> <!-- MITRE Search Styles -->
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <div class="nav-container">
+        <a href="#" class="logo">🛡️ AI Threat Hunter</a>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#benefits">Benefits</a>
+          <a href="#demo">Demo</a>
+          <a href="#contact">Contact</a>
+        </div>
+
+        <!-- 🔍 MITRE Search Bar -->
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Search MITRE ATT&CK..." />
+          <button id="searchBtn" onclick="searchTechniques()">Search</button>
+        </div>
+        
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- MITRE Search Section -->
+  <section class="section section-light" id="mitreSearch">
+    <div class="container">
+        <a href="game.html" class="try-game">Try a Game</a>
+        <a href="graph.html" class="nav-link">Top 10 MITRE ATT&CKs</a>
+
+      <div id="results" class="search-results"></div>
+    </div>
+    
+  </section>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>AI Threat Hunting Assistant</h1>
+        <p class="tagline">Accelerate investigations with AI-powered threat hunting</p>
+        <p class="subtitle">Natural language queries. Instant MITRE mapping. Smarter security.</p>
+        <a href="#demo" class="cta-primary">Request Demo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem Statement -->
+  <section class="section section-dark">
+    <div class="container">
+      <h2>The Challenge Security Teams Face</h2>
+      <div class="section-content">
+        <p>Security analysts spend countless hours manually crafting complex log queries, mapping incidents to MITRE ATT&CK frameworks, and searching through documentation to build effective threat hunting strategies.</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-item">
+          <h3>⏱️ Time-Intensive Manual Queries</h3>
+          <p>Analysts waste 60-70% of their time writing and refining SIEM queries instead of analyzing threats</p>
+        </div>
+        <div class="problem-item">
+          <h3>🎯 Inconsistent MITRE Mapping</h3>
+          <p>Manual mapping to ATT&CK techniques leads to gaps in coverage and missed threat patterns</p>
+        </div>
+        <div class="problem-item">
+          <h3>📚 Knowledge Fragmentation</h3>
+          <p>Critical threat intelligence scattered across multiple sources slows down incident response</p>
+        </div>
+        <div class="problem-item">
+          <h3>⚡ Delayed Response Times</h3>
+          <p>Complex query development delays threat detection and extends attacker dwell time</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solution Overview -->
+  <section class="section section-light">
+    <div class="container">
+      <h2>Intelligent Solution Architecture</h2>
+      <div class="section-content">
+        <p>Our AI Threat Hunting Assistant leverages <strong>IBM Granite</strong> foundation models combined with advanced <strong>Retrieval-Augmented Generation (RAG)</strong> technology to transform how security teams operate.</p>
+        <p>By ingesting the complete <strong>MITRE ATT&CK framework</strong>, thousands of <strong>Sigma detection rules</strong>, and proven <strong>incident response playbooks</strong> into an intelligent vector database, the assistant provides instant, context-aware responses to natural language security queries.</p>
+        <p>This powerful combination enables <strong>natural language understanding</strong>, <strong>lightning-fast retrieval</strong> of relevant security intelligence, and <strong>automated query generation</strong> that would typically take analysts hours to develop.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section section-dark" id="features">
+    <div class="container">
+      <h2>Key Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Natural Language Interface</h3>
+          <p>Ask questions in plain English: "Show me lateral movement techniques targeting Windows domains" and get precise, actionable results instantly.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>MITRE ATT&CK Automation</h3>
+          <p>Automatic mapping of threats to MITRE techniques with detailed context, sub-techniques, and mitigation strategies.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3>Sigma Rule Generation</h3>
+          <p>Generate production-ready Sigma detection rules based on threat scenarios, complete with proper syntax and field mappings.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📖</div>
+          <h3>IR Playbook Integration</h3>
+          <p>Access contextualized incident response procedures and playbooks tailored to specific threat patterns and attack techniques.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Fast Context-Aware Retrieval</h3>
+          <p>Sub-second retrieval from indexed cybersecurity knowledge base with semantic understanding of security concepts.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧠</div>
+          <h3>IBM Granite AI Engine</h3>
+          <p>Enterprise-grade AI foundation model specifically optimized for cybersecurity use cases and terminology.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo -->
+  <section class="section section-dark" id="demo">
+    <div class="container">
+      <h2>Try the AI Threat Hunter</h2>
+      <div class="section-content">
+        <p>Experience our AI-powered analysis. Describe a cyber fraud case and get instant MITRE ATT&CK analysis with risk assessment and remediation steps.</p>
+      </div>
+      <div class="chatbot-container">
+        <div class="chat-interface">
+          <div class="chat-messages" id="chatMessages">
+            <div class="bot-message">
+              <div class="message-avatar">🤖</div>
+              <div class="message-content">
+                <strong>AI Threat Hunter:</strong> Hello! I'm ready to analyze your cyber fraud case. Please describe the incident details, including any suspicious activities, affected systems, or indicators you've observed.
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-container">
+            <textarea id="chatInput" placeholder="Describe your cyber fraud case..." rows="3"></textarea>
+            <button id="analyzeBtn" class="analyze-btn">
+              <span id="btnText">Analyze Case</span>
+              <span id="btnLoader" class="loader" style="display: none;">🔄</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 AI Threat Hunting Assistant. All rights reserved. | Built for CISOs, SOC Managers, and Security Analysts</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="index1.js"></script>
+</body>
+</html>
