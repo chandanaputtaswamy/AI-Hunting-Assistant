@@ -189,9 +189,14 @@ function performAnalysis(caseDescription) {
                 </div>
             </div>
             <div class="analysis-item">
-                <h4>⚠️ Risk Assessment</h4>
-                <p><strong>${riskPercentage}% - ${riskLevel} Risk</strong></p>
-            </div>
+    <h4>⚠️ Risk Assessment</h4>
+    <p>
+        <span class="risk-indicator risk-${riskLevel.toLowerCase()}">
+            ${riskPercentage}% - ${riskLevel} Risk
+        </span>
+    </p>
+</div>
+
             <div class="analysis-item">
                 <h4>🛡️ Recommended Actions</h4>
                 <p>${remediationSteps}</p>
